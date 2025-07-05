@@ -11,6 +11,7 @@ use App\Http\Controllers\BillController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\MedicinePurchaseController;
 use App\Http\Controllers\MedicineSaleController;
+use App\Http\Controllers\StockActivityController;
 
 
 Route::get('/', [DashboardController::class,'index'])->name('dashboard');
@@ -24,3 +25,9 @@ Route::resource('prescriptions', PrescriptionController::class);
 Route::resource('doctors', DoctorController::class);
 Route::resource('appointments', AppointmentController::class);
 Route::resource('patients', PatientController::class);
+
+Route::get('/stock-management', [StockActivityController::class, 'index'])->name('stock.index');
+
+Route::post('/stock-management/stock-in', [StockActivityController::class, 'stockInStore'])->name('stock.in.store');
+
+Route::post('/stock-management/stock-out', [StockActivityController::class, 'stockOutStore'])->name('stock.out.store');

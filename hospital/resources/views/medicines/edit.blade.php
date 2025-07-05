@@ -1,12 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
-    <h2 class="mb-4">Edit Medicine</h2>
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+    }
+    .form-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgb(99 99 99 / 0.2);
+        padding: 30px;
+        max-width: 700px;
+        margin: 40px auto;
+    }
+    h2 {
+        color: #334e68;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+    label {
+        font-weight: 600;
+        color: #486581;
+    }
+    .btn-primary {
+        background-color: #3b82f6;
+        border: none;
+    }
+    .btn-primary:hover {
+        background-color: #2563eb;
+    }
+</style>
+
+<div class="form-card">
+    <h2>✏️ Edit Medicine</h2>
 
     @if($errors->any())
         <div class="alert alert-danger">
-            <strong>Whoops!</strong> Please fix the following issues:<br><br>
+            <strong>Whoops!</strong> Please fix the following errors:<br><br>
             <ul class="mb-0">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -15,36 +45,57 @@
         </div>
     @endif
 
-    <form action="{{ route('medicines.update', $medicine) }}" method="POST">
+    <form action="{{ route('medicines.update', $medicine->id) }}" method="POST">
         @csrf
         @method('PUT')
 
         <div class="row g-3">
             <div class="col-md-6">
-                <label for="name" class="form-label">Medicine Name</label>
-                <input type="text" name="name" class="form-control" value="{{ old('name', $medicine->name) }}" required>
+                <label for="name">Medicine Name <span class="text-danger">*</span></label>
+                <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $medicine->name) }}" required>
             </div>
+
             <div class="col-md-6">
-                <label for="generic" class="form-label">Generic Name</label>
-                <input type="text" name="generic" class="form-control" value="{{ old('generic', $medicine->generic) }}">
+                <label for="type">Type</label>
+                <input type="text" name="type" id="type" class="form-control" value="{{ old('type', $medicine->type) }}" placeholder="e.g., Tablet, Syrup">
             </div>
+
             <div class="col-md-6">
-                <label for="type" class="form-label">Type</label>
-                <input type="text" name="type" class="form-control" value="{{ old('type', $medicine->type) }}" required>
+                <label for="manufacturer">Manufacturer</label>
+                <input type="text" name="manufacturer" id="manufacturer" class="form-control" value="{{ old('manufacturer', $medicine->manufacturer) }}" placeholder="Company name">
             </div>
-            <div class="col-md-3">
-                <label for="price" class="form-label">Price</label>
-                <input type="number" step="0.01" name="price" class="form-control" value="{{ old('price', $medicine->price) }}" required>
+
+            <div class="col-md-6">
+                <label for="unit">Unit</label>
+                <input type="text" name="unit" id="unit" class="form-control" value="{{ old('unit', $medicine->unit) }}" placeholder="e.g., Tablet, Packet">
             </div>
-            <div class="col-md-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" name="stock" class="form-control" value="{{ old('stock', $medicine->stock) }}" required>
+
+            <div class="col-md-4">
+                <label for="stock">Stock <span class="text-danger">*</span></label>
+                <input type="number" name="stock" id="stock" class="form-control" min="0" value="{{ old('stock', $medicine->stock) }}" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="price">Price (৳) <span class="text-danger">*</span></label>
+                <input type="number" name="price" id="price" class="form-control" step="0.01" min="0" value="{{ old('price', $medicine->price) }}" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="purchase_price">Purchase Price (৳)</label>
+                <input type="number" name="purchase_price" id="purchase_price" class="form-control" step="0.01" min="0" value="{{ old('purchase_price', $medicine->purchase_price) }}">
+            </div>
+
+            <div class="col-md-6">
+                <label for="expiry_date">Expiry Date</label>
+                <input type="date" name="expiry_date" id="expiry_date" class="form-control" value="{{ old('expiry_date', $medicine->expiry_date) }}">
             </div>
         </div>
 
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="{{ route('medicines.index') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save"></i> Update Medicine
+            </button>
+            <a href="{{ route('medicines.index') }}" class="btn btn-secondary ms-2">Cancel</a>
         </div>
     </form>
 </div>

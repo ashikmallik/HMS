@@ -143,7 +143,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="../widgets/cards.html" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
+                                    <a href="{{route('stock.index')}}" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
                                         <p>Stock Management</p>
                                     </a>
                                 </li>

@@ -3,99 +3,92 @@
 @section('content')
 <style>
     body {
-        background: linear-gradient(to right, #f0f4ff, #e3efff);
+        background: linear-gradient(to right, #e0f7fa, #ede7f6);
     }
-    .medicine-card {
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        padding: 25px;
-        transition: 0.3s;
+    .table-container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     }
-    .medicine-card:hover {
-        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    .table thead th {
+        background-color: #4527a0;
+        color: #fff;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
-    .table th, .table td {
+    .table td, .table th {
         vertical-align: middle;
+    }
+    h2 {
+        color: #311b92;
+        font-weight: bold;
     }
 </style>
 
-<!-- DataTables CSS -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
-
 <div class="container py-5">
-    <div class="medicine-card">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold text-primary">🧪 Medicine Inventory</h2>
-            <div>
-                <a href="" class="btn btn-outline-primary me-2">
-                    <i class="bi bi-file-earmark-excel"></i> Export Excel
-                </a>
-                <a href="{{ route('medicines.create') }}" class="btn btn-success shadow-sm">
-                    <i class="bi bi-plus-circle me-1"></i> Add New Medicine
-                </a>
-            </div>
-        </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-capsule"></i> Medicine List</h2>
+        <a href="{{ route('medicines.create') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Add New Medicine
+        </a>
+    </div>
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
+    <div class="table-container">
         <div class="table-responsive">
-            <table id="medicineTable" class="table table-hover table-bordered align-middle">
-                <thead class="table-primary text-center">
+            <table class="table table-striped table-hover">
+                <thead>
                     <tr>
-                        <th>#</th>
+                        <th>ID</th>
                         <th>Name</th>
-                        <th>Generic</th>
                         <th>Type</th>
-                        <th>Price</th>
+                        <th>Manufacturer</th>
+                        <th>Unit</th>
                         <th>Stock</th>
+                        <th>Price</th>
+                        <th>Purchase Price</th>
+                        <th>Expiry Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($medicines as $medicine)
-                        <tr>
-                            <td class="text-center">{{ $loop->iteration }}</td>
-                            <td>{{ $medicine->name }}</td>
-                            <td>{{ $medicine->generic ?? 'N/A' }}</td>
-                            <td>{{ $medicine->type }}</td>
-                            <td>৳ {{ number_format($medicine->price, 2) }}</td>
-                            <td>{{ $medicine->stock }}</td>
-                            <td class="text-center">
-                                <a href="{{ route('medicines.edit', $medicine) }}" class="btn btn-sm btn-outline-warning">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                <form action="{{ route('medicines.destroy', $medicine) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash3"></i> Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{{ $medicine->id }}</td>
+                        <td>{{ $medicine->name }}</td>
+                        <td>{{ $medicine->type }}</td>
+                        <td>{{ $medicine->manufacturer }}</td>
+                        <td>{{ $medicine->unit }}</td>
+                        <td>{{ $medicine->stock }}</td>
+                        <td>{{ number_format($medicine->price, 2) }}</td>
+                        <td>{{ number_format($medicine->purchase_price, 2) }}</td>
+                        <td>{{ $medicine->expiry_date ? \Carbon\Carbon::parse($medicine->expiry_date)->format('d M Y') : 'N/A' }}</td>
+                        <td>
+                            <a href="{{ route('medicines.edit', $medicine) }}" class="btn btn-sm btn-warning">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <form action="{{ route('medicines.destroy', $medicine) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="7" class="text-center text-muted">No medicines found.</td>
-                        </tr>
+                    <tr>
+                        <td colspan="10" class="text-center text-muted">No medicines found.</td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
-<!-- DataTables JS -->
-<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-<script>
-    $(document).ready(function () {
-    $('#medicineTable').DataTable();
-});
-</script>
 @endsection
