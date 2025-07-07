@@ -22,6 +22,26 @@
                         <li class="nav-item">
                             <a href="#" class="nav-link"></i><i class="nav-icon bi bi bi-person-lines-fill"></i>
                                 <p>
+                                     Users <i class="nav-arrow bi bi-chevron-right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link"><i class="nav-icon bi bi-person-lines-fill"></i>
+                                        <p>Users</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('roles.index') }}" class="nav-link"><i class="nav-icon bi bi-person-lines-fill"></i>
+                                        <p>Roles</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link"></i><i class="nav-icon bi bi bi-person-lines-fill"></i>
+                                <p>
                                      Patients <i class="nav-arrow bi bi-chevron-right"></i>
                                 </p>
                             </a>

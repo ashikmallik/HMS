@@ -115,8 +115,17 @@
                                     <div class="col-4 text-center"> <a href="#">Friends</a> </div>
                                 </div> <!--end::Row-->
                             </li> <!--end::Menu Body--> <!--begin::Menu Footer-->
-                            <li class="user-footer"> <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                <a href="#" class="btn btn-default btn-flat float-end">Sign out</a> </li>
+                            <li class="user-footer">
+                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                <a href="{{ route('logout') }}" class="btn btn-default btn-flat float-end"
+                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </li>
+
                             <!--end::Menu Footer-->
                         </ul>
                     </li> <!--end::User Menu Dropdown-->
